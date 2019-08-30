@@ -12,18 +12,26 @@ class StationType(models.Model):
         return self.type_name
 
 
+class StationDataFields(models.Model):
+    name = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name  
+
+
 class Station(models.Model):
     station_name = models.CharField(max_length=64, unique=True)
     station_type = models.OneToOneField(StationType, on_delete=models.CASCADE)
     station_num  = models.CharField(validators=[phone_regex], max_length=13, blank=True)
     location_lat = models.FloatField()
     loaction_lon = models.FloatField()
-    column_names = models.CharField(max_length=256)
+    column_names = models.ManyToManyField(StationDataFields)
 
     def __str__(self):
         return self.station_name
 
 
 class StationData(models.Model):
-    data_row     = models.CharField(max_length=256)
-    station      = models.ForeignKey(Station, on_delete=models.CASCADE)
+    station    = models.ForeignKey(Station, on_delete=models.CASCADE)
+    entry_date = models.DateTimeField(auto_now_add=True)
+    data       = models.CharField(max_length=256)
