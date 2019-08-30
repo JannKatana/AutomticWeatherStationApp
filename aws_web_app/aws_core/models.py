@@ -12,11 +12,11 @@ class StationType(models.Model):
         return self.type_name
 
 
-class StationDataFields(models.Model):
+class StationDataField(models.Model):
     name = models.CharField(max_length=20)
 
     def __str__(self):
-        return self.name  
+        return self.name 
 
 
 class Station(models.Model):
@@ -25,7 +25,7 @@ class Station(models.Model):
     station_num  = models.CharField(validators=[phone_regex], max_length=13, blank=True)
     location_lat = models.FloatField()
     loaction_lon = models.FloatField()
-    column_names = models.ManyToManyField(StationDataFields)
+    column_names = models.ManyToManyField(StationDataField)
 
     def __str__(self):
         return self.station_name
