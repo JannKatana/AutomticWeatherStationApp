@@ -21,4 +21,6 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('aws_core/', include('aws_core.urls')),
     path('admin/', admin.site.urls),
+    path('new_station/', views.new_station_view, name='new_station')
+    
 ]
