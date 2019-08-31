@@ -21,10 +21,10 @@ class StationDataField(models.Model):
 
 class Station(models.Model):
     station_name = models.CharField(max_length=64, unique=True)
-    station_type = models.OneToOneField(StationType, on_delete=models.CASCADE)
+    station_type = models.ForeignKey(StationType, on_delete=models.CASCADE)
     station_num  = models.CharField(validators=[phone_regex], max_length=13, blank=True)
-    location_lat = models.FloatField()
-    loaction_lon = models.FloatField()
+    location_lat = models.FloatField(blank=True, null=True)
+    location_lon = models.FloatField(blank=True, null=True)
     column_names = models.ManyToManyField(StationDataField)
 
     def __str__(self):
