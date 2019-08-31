@@ -1,9 +1,41 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html>
 <head>
 	<title></title>
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+	{{ form.media.css }}
 </head>
 <body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<a class="navbar-brand" href="{% url 'index' %}">AWS_CORE</a>
+
+		<div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+			<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+				<li class="nav-item active">
+					<a class="nav-link" href="{% url 'aws_core:station_list' %}">Station</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">About</a>
+				</li>
+			</ul>
+
+			<a class="btn btn-outline-primary my-2 my-sm-0" href="#">Settings</a>
+
+		</div>
+	</nav>
+
+	<div class="container">
+		{% block body_block %}
+		{% endblock %}
+	</div>
+
+	<script src="{% static 'js/jquery-3.4.1.slim.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	{{ form.media.js }}
 
 </body>
 </html>

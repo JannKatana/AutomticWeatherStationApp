@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% extends "aws_core/base.html "%}
+{% block body_block %}
+
+<br>	
+<form class="form-inline my-2 my-lg-0">
+    <input class="form-control mr-sm-2" type="search" placeholder="Station Name" aria-label="Search">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+
+{% for station in stations %}
+<br>
+<div class="card">
+	<div class="card-header">
+		<h5 >
+			{{station}} 
+			<a href="#" class="btn btn-primary btn-sm float-right">Edit</a> 
+		</h5>
+	</div>
+	
+	<div class="card-body">
+		<h5 class="card-title">Details</h5>
+		<p class="card-text">Type: {{ station.station_type }}</p>
+		<p class="card-text">Phone: {{ station.station_num }}</p>
+		
+	</div>
+</div>
+{% endfor %}
+
+{% endblock %}

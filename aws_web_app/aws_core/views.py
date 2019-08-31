@@ -37,3 +37,7 @@ def station_add(request):
 
 
 	return render(request, 'aws_core/new_station_page.html', {'form':form})
+
+def station_list(request):
+	station_list = Station.objects.all().order_by('station_name')
+	return render(request, 'aws_core/station_list.html', {'stations':station_list})

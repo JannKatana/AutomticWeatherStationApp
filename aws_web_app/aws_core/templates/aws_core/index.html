@@ -1,15 +1,9 @@
 <!DOCTYPE html>
-{% load staticfiles %}
-<html>
-<head>
-	<title></title>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
-<body>
-	<div class="container">
-		<div class="jumbotron">
-			<h1>Welcome to aws web app</h1>
-		</div>
-	</div>
-</body>
-</html>
+{% extends "aws_core/base.html "%}
+{% block body_block %}
+<br>
+<div class="jumbotron">
+	<h1>Welcome to AWS Web App</h1>
+	<a href="{% url 'aws_core:add_station' %}">Add Station</a>
+</div>
+{% endblock %}
