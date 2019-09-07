@@ -1,51 +1,129 @@
 <!DOCTYPE html>
 {% extends "aws_core/base.html "%}
+{% load staticfiles %}
+
 {% block body_block %}
-	<h3>Add Station</h3>
-	<div class="container">
-		<form method="POST">
-			{% csrf_token %}
+<h3>Add Station</h3>
+<div class="container">
+	<form method="POST">
+		{% csrf_token %}
 
-			<div class="form-group row">
-			    <label class="col-sm-2 col-form-label">{{ form.station_name.label }}</label>
-			    <div class="col-sm-10">
-			      {{ form.station_name }}
-			    </div>
-			</div>
-			<div class="form-group row">
-			    <label class="col-sm-2 col-form-label">{{ form.station_type.label }}</label>
-			    <div class="col-sm-10">
-			      {{ form.station_type}}
-			    </div>
-			</div>
+		<div class="form-group row">
+		    <label class="col-sm-2 col-form-label">{{ form.station_name.label }}</label>
+		    <div class="col-sm-10">
+		      {{ form.station_name }}
+		    </div>
+		</div>
+		<div class="form-group row">
+		    <label class="col-sm-2 col-form-label">{{ form.station_type.label }}</label>
+		    <div class="col-sm-10">
+		      {{ form.station_type}}
+		    </div>
+		</div>
 
-			<div class="form-group row">
-			    <label class="col-sm-2 col-form-label">{{ form.station_num.label }}</label>
-			    <div class="col-sm-10">
-			      {{ form.station_num }}
-			    </div>
-			</div>
+		<div class="form-group row">
+		    <label class="col-sm-2 col-form-label">{{ form.station_num.label }}</label>
+		    <div class="col-sm-10">
+		      {{ form.station_num }}
+		    </div>
+		</div>
 
-			<div class="form-group row">
-			    <label class="col-sm-2 col-form-label">{{ form.location_lat.label }}</label>
-			    <div class="col-sm-10">
-			      {{ form.location_lat }}
-			    </div>
-			</div>
+		<div class="form-group row">
+		    <label class="col-sm-2 col-form-label">{{ form.location_lat.label }}</label>
+		    <div class="col-sm-10">
+		      {{ form.location_lat }}
+		    </div>
+		</div>
 
-			<div class="form-group row">
-			    <label class="col-sm-2 col-form-label">{{ form.location_lon.label }}</label>
-			    <div class="col-sm-10">
-			      {{ form.location_lon }}
-			    </div>
-			</div>
-			<div class="form-group row">
-			    <label class="col-sm-2 col-form-label">{{ form.column_names.label }}</label>
-			    <div class="col-sm-10">
-			      {{ form.column_names }}
-			    </div>
-			</div>
-			<input type="submit" class="btn btn-primary" value="submit">
-		</form>
-	</div>
+		<div class="form-group row">
+		    <label class="col-sm-2 col-form-label">{{ form.location_lon.label }}</label>
+		    <div class="col-sm-10">
+		      {{ form.location_lon }}
+		    </div>
+		</div>
+		<div class="form-group row">
+		    <label class="col-sm-2 col-form-label">Data Columns</label>
+		    <div class="col-sm-10">
+			    <div class="multiple-select-container">
+					<div class="tag-container">
+						<input/>
+					</div>
+				</div>		    	
+		    </div>
+		</div>
+		<br>
+		<input type="hidden" id="id_data_columns" name="data_columns">
+		<input type="submit" class="btn btn-primary" value="submit">
+	</form>
+</div>
+
+
+<script>
+const tagContainer = document.querySelector('.tag-container');
+const input = document.querySelector('.tag-container input');
+const data_columns = document.getElementById('id_data_columns');
+
+var tags = [];
+
+function createTag(label) {
+	const div = document.createElement('div');
+	div.setAttribute('class', 'tag');
+	const span = document.createElement('span');
+	span.innerHTML = label;
+	const closeBtn = document.createElement('img');
+	closeBtn.setAttribute('src',"{% static 'icons/close.png' %}");
+	closeBtn.setAttribute('data-item','label');
+
+	div.appendChild(span);
+	div.appendChild(closeBtn);
+
+	return div;
+}
+
+function reset() {
+	document.querySelectorAll('.tag').forEach(function(tag){
+		tag.parentElement.removeChild(tag);
+	})
+}
+
+function addTags() {
+	reset();
+	tags.slice().reverse().forEach(function(tag) {
+		const input = createTag(tag);
+		tagContainer.prepend(input);
+	})
+
+	saveToHiddenInput();
+}
+
+function saveToHiddenInput() {
+
+	var data_string = "";
+
+	tags.forEach(function(tag) {
+		data_string = data_string + tag + "#";
+	})
+
+	data_string = data_string.replace(/\s+/g, '');
+	data_columns.value = data_string;
+}
+
+input.addEventListener('keyup', function(e) {
+	if (e.keyCode == 32) {
+		tags.push(input.value);
+		addTags();
+		input.value = '';
+	}
+})
+
+document.addEventListener('click', function(e) {
+	if (e.target.tagName == 'IMG') {
+		const value = e.target.getAttribute('data-item');
+		const index = tags.indexOf(value);
+		tags.splice(index, 1);
+		addTags();
+	}
+})
+
+</script>
 {% endblock %}

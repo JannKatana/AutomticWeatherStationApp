@@ -1,7 +1,7 @@
 from django import forms
 from django.core import validators
 from aws_core.models import StationType, StationDataField, Station
-from django_select2.forms import Select2MultipleWidget, Select2Widget, Select2TagWidget
+from django_select2.forms import Select2TagWidget
 
 class StationForm(forms.ModelForm):
 
@@ -31,13 +31,7 @@ class StationForm(forms.ModelForm):
 		widget=forms.TextInput(attrs={'class': 'form-control'}),
 	)
 
-	column_names = forms.ModelMultipleChoiceField(
-		label='Data Columns',
-		queryset=StationDataField.objects.all(),
-		widget=Select2TagWidget(attrs={'class': 'form-control'}),
-	)
-
 	class Meta():
 		model = Station
-		fields = '__all__'
+		exclude = ('column_names',)
 

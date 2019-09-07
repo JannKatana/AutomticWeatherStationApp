@@ -13,12 +13,12 @@ def station_add(request):
 	form = forms.StationForm()
 
 	if request.method == 'POST':
+		print(request.POST)
 		try:
 			station_type = StationType.objects.get(id=request.POST.get('station_type'))
 		except ValueError:
 			station_type = StationType.objects.create(type_name=request.POST.get('station_type'))
 
-		column_names = request.POST.getlist('column_names')
 		station = Station.objects.create(
 			station_name = request.POST.get('station_name'),
 			station_num  = request.POST.get('station_num'),
@@ -27,12 +27,12 @@ def station_add(request):
 			location_lon = request.POST.get('location_lon'),
 		)
 
-		for column_id in column_names:
-			try:
-				field_name = StationDataField.objects.get(id=column_id)
-			except ValueError:	
-				field_name = StationDataField.objects.create(name=column_id)
+		column_names = request.POST.get('data_columns')
+		column_names = column_names[:-1]
+		column_names = column_names.split("#")
 
+		for column_name in column_names:
+			field_name = StationDataField.objects.get_or_create(name=column_name)[0]
 			station.column_names.add(field_name)
 
 
