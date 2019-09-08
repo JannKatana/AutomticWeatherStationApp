@@ -23,15 +23,15 @@ class StationForm(forms.ModelForm):
 
 	location_lat = forms.FloatField(
 		label='Latitude',
-		widget=forms.TextInput(attrs={'class': 'form-control'}),
+		widget=forms.TextInput(attrs={'class': 'form-control', 'readonly':'readonly'}),
 	)
 
 	location_lon = forms.FloatField(
 		label='Longitude',
-		widget=forms.TextInput(attrs={'class': 'form-control'}),
+		widget=forms.TextInput(attrs={'class': 'form-control', 'readonly':'readonly'}),
 	)
 
 	class Meta():
 		model = Station
-		exclude = ('column_names',)
+		exclude = ('column_names', 'pinned')
 

@@ -26,6 +26,7 @@ class Station(models.Model):
     location_lat = models.FloatField(blank=True, null=True)
     location_lon = models.FloatField(blank=True, null=True)
     column_names = models.ManyToManyField(StationDataField)
+    pinned       = models.BooleanField(default=False)
 
     def __str__(self):
         return self.station_name
@@ -35,3 +36,4 @@ class StationData(models.Model):
     station    = models.ForeignKey(Station, on_delete=models.CASCADE)
     entry_date = models.DateTimeField(auto_now_add=True)
     data       = models.CharField(max_length=256)
+

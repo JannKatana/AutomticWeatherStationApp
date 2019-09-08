@@ -6,14 +6,15 @@ from aws_core.models import StationType, Station, StationData, StationDataField
 # Create your views here.
 
 def index(request):
-	return render(request, 'aws_core/index.html')
+	pinned_stations = Station.objects.filter(pinned=True)
+	print(pinned_stations)
+	return render(request, 'aws_core/index.html', {'pinned_stations':pinned_stations})
 
 
 def station_add(request):
 	form = forms.StationForm()
 
 	if request.method == 'POST':
-		print(request.POST)
 		try:
 			station_type = StationType.objects.get(id=request.POST.get('station_type'))
 		except ValueError:
@@ -39,5 +40,29 @@ def station_add(request):
 	return render(request, 'aws_core/new_station_page.html', {'form':form})
 
 def station_list(request):
+	if request.method == 'POST':
+		pk = request.POST.get('pk')
+		pinned = request.POST.get('pinned')
+		station = Station.objects.get(id=pk)
+
+		if (pinned == 'true'):
+			station.pinned = True
+		else:
+			station.pinned = False
+
+		station.save()
+
 	station_list = Station.objects.all().order_by('station_name')
-	return render(request, 'aws_core/station_list.html', {'stations':station_list})
+	
+	data_list = []
+	for station in station_list:
+		field_names = station.column_names.all()
+		data_to_show = StationData.objects.filter(station=station).order_by('-id')
+
+		if len(data_to_show) != 0:
+			data_to_show = data_to_show[0].data.split('#')
+
+		data = [station, zip(field_names, data_to_show)]
+		data_list.append(data)
+
+	return render(request, 'aws_core/station_list.html', {'data_list':data_list})

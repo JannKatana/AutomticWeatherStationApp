@@ -5,6 +5,8 @@
 	<title></title>
 	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
 	<link rel="stylesheet" href="{% static 'css/custom-styles.css' %}">
+	<link rel="stylesheet" href="{% static 'css/leaflet.css' %}">
+	<script src="{% static 'js/leaflet.js' %}"></script>	
 	{{ form.media.css }}
 </head>
 <body>
@@ -17,7 +19,7 @@
 		<div class="collapse navbar-collapse" id="navbarTogglerDemo03">
 			<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'aws_core:station_list' %}">Station</a>
+					<a class="nav-link" href="{% url 'aws_core:station_list' %}">Stations</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="#">About</a>
@@ -34,9 +36,9 @@
 		{% endblock %}
 	</div>
 
-	<script src="{% static 'js/jquery-3.4.1.slim.min.js' %}"></script>
+	<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
 	<script src="{% static 'js/bootstrap.min.js' %}"></script>
-	{{ form.media.js }}
+	{{ form.media.js }} 
 
 </body>
 </html>
