@@ -3,11 +3,27 @@ from django.shortcuts import render
 from aws_core import forms
 from aws_core.models import StationType, Station, StationData, StationDataField
 
+import json
 # Create your views here.
 
 def index(request):
+	if request.method == 'POST' and request.is_ajax():
+		pk = request.POST.get('pk')
+		pinned = request.POST.get('pinned')
+		station = Station.objects.get(id=pk)
+
+		field_names = station.column_names.all()
+		data_to_show = StationData.objects.filter(station=station).order_by('-id')
+
+		if len(data_to_show) != 0:
+			data_to_show = data_to_show[0].data.split('#')
+
+		response = {}
+		for field_name, data in zip(field_names, data_to_show):
+			response[field_name.name] = data
+		return HttpResponse(json.dumps(response), content_type="application/json")
+
 	pinned_stations = Station.objects.filter(pinned=True)
-	print(pinned_stations)
 	return render(request, 'aws_core/index.html', {'pinned_stations':pinned_stations})
 
 
